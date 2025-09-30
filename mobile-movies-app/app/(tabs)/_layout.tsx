@@ -12,6 +12,7 @@ const Layout = () => {
           headerShown: false,
         }}
       />
+
       <Tabs.Screen
         name="search"
         options={{
@@ -19,6 +20,7 @@ const Layout = () => {
           headerShown: false,
         }}
       />
+
       <Tabs.Screen
         name="saved"
         options={{
