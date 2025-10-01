@@ -1,55 +1,62 @@
-import React from "react";
 import { Tabs } from "expo-router";
+import { ImageBackground, Image, Text, View } from "react-native";
 
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
-import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
 
-type Props = {
-  name: string;
-  icon: any;
-  focused: boolean;
-};
-
-function TabBarItem({ name, icon, focused }: Props) {
+function TabIcon({ focused, icon, title }: any) {
   if (focused) {
     return (
       <ImageBackground
-        className="min-w-[120px] flex flex-row flex-1 min-h-16 mt-4 items-center justify-center rounded-full overflow-hidden"
         source={images.highlight}
+        className="flex flex-row w-full flex-1 min-w-[112px] min-h-14 mt-4 justify-center items-center rounded-full overflow-hidden"
       >
-        <Image source={icon} tintColor={"#151312"} className="size-5" />
-        <Text className="text-secondary text-sm font-semibold ml-2">
-          {name}
+        <Image source={icon} tintColor="#151312" className="size-5" />
+        <Text className="text-secondary text-base font-semibold ml-2">
+          {title}
         </Text>
       </ImageBackground>
     );
-  } else {
-    return (
-      <View className="size-full flex justify-center items-center mt-4 rounded-full">
-        <Image source={icon} tintColor={"#a8b5db"} className="size-5" />
-      </View>
-    );
   }
+
+  return (
+    <View className="size-full justify-center items-center mt-4 rounded-full">
+      <Image source={icon} tintColor="#A8B5DB" className="size-5" />
+    </View>
+  );
 }
 
-const TabsLayout = () => {
+export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
         tabBarShowLabel: false,
-        tabBarItemStyle: styles.tabBarIcon,
-        tabBarStyle: styles.tabBar,
-        animation: "fade",
+        tabBarItemStyle: {
+          width: "100%",
+          height: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        },
+        tabBarStyle: {
+          backgroundColor: "#0F0D23",
+          borderRadius: 50,
+          marginHorizontal: 20,
+          marginBottom: 36,
+          height: 52,
+          position: "absolute",
+          overflow: "hidden",
+          borderWidth: 1,
+          borderColor: "#0F0D23",
+        },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
+          title: "index",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabBarItem name="Home" icon={icons.home} focused={focused} />
+            <TabIcon focused={focused} icon={icons.home} title="Home" />
           ),
         }}
       />
@@ -60,18 +67,18 @@ const TabsLayout = () => {
           title: "Search",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabBarItem name="Search" icon={icons.search} focused={focused} />
+            <TabIcon focused={focused} icon={icons.search} title="Search" />
           ),
         }}
       />
 
       <Tabs.Screen
-        name="saved"
+        name="save"
         options={{
-          title: "Saved",
+          title: "Save",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabBarItem name="Saved" icon={icons.save} focused={focused} />
+            <TabIcon focused={focused} icon={icons.save} title="Save" />
           ),
         }}
       />
@@ -82,34 +89,10 @@ const TabsLayout = () => {
           title: "Profile",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabBarItem name="Profile" icon={icons.person} focused={focused} />
+            <TabIcon focused={focused} icon={icons.person} title="Profile" />
           ),
         }}
       />
     </Tabs>
   );
-};
-
-export default TabsLayout;
-
-const styles = StyleSheet.create({
-  tabBar: {
-    backgroundColor: "#0f0d23",
-    borderRadius: 50,
-    marginHorizontal: 20,
-    marginBottom: 36,
-    height: 52,
-    position: "absolute",
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "#0f0d23",
-  },
-
-  tabBarIcon: {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
+}
