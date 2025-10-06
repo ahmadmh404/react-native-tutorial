@@ -4,7 +4,6 @@ import { images } from "@/constants/images";
 import useFetch from "@/services/use-fetch";
 import { fetchMovies } from "@/services/api";
 import MovieCard from "@/components/movie-card";
-import { useRouter } from "expo-router";
 import { icons } from "@/constants/icons";
 import SearchBar from "@/components/search-bar";
 
@@ -35,7 +34,7 @@ const Search = () => {
     return () => {
       clearTimeout(func);
     };
-  }, [searchQuery, searchMovies, reset]);
+  }, [searchQuery]);
 
   return (
     <View className="flex-1 bg-primary">
@@ -48,8 +47,10 @@ const Search = () => {
       <FlatList
         data={movies}
         className="px-5"
-        renderItem={({ item }) => <MovieCard movie={item} />}
-        keyExtractor={({ item }) => item.id.toString()}
+        renderItem={({ item }) => <MovieCard {...item} />}
+        keyExtractor={({ item }) =>
+          `item-${item?.id.toString()}-${Math.random()}`
+        }
         numColumns={3}
         columnWrapperStyle={{
           justifyContent: "center",
@@ -67,7 +68,7 @@ const Search = () => {
               resizeMode="cover"
             />
 
-            <View className="my-5">
+            <View className="w-full my-5">
               <SearchBar
                 value={searchQuery}
                 onChangeText={handleSearchQueryChange}
@@ -93,8 +94,8 @@ const Search = () => {
             {!errorSearch &&
               !loadingSearch &&
               searchQuery.trim() &&
-              movies.length > 1 && (
-                <Text className="text-lg font-bold text-white">
+              movies?.length > 1 && (
+                <Text className="text-lg font-bold text-white mb-3">
                   Search results for{" "}
                   <Text className="text-accent">{searchQuery}</Text>
                 </Text>

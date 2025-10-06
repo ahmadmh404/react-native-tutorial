@@ -37,15 +37,25 @@ export default function Index() {
       >
         <Image source={icons.logo} className="w-12 h-10 mt-20 mb-5 mx-auto" />
 
-        {moviesLoading ? (
+        {moviesError && <Text>Error: {moviesError.message}</Text>}
+
+        {moviesLoading && (
           <ActivityIndicator
             size={"large"}
             color={"#0000ff"}
             className="mt-10 self-center"
           />
-        ) : moviesError ? (
-          <Text>Error: {moviesError.message}</Text>
-        ) : (
+        )}
+
+        {movies?.length === 0 && (
+          <View className="flex-row justify-center items-stretch">
+            <Text className="text-gray-500">
+              No movies available at the moment.
+            </Text>
+          </View>
+        )}
+
+        {movies && (
           <View className="flex-1 mt-5">
             <SearchBar onPress={handlePress} placeholder="Search for a movie" />
 
@@ -56,8 +66,10 @@ export default function Index() {
 
               <FlatList
                 data={movies}
-                renderItem={({ item }) => <MovieCard movie={item} />}
-                keyExtractor={({ item }) => item.id.toString()}
+                renderItem={({ item }) => <MovieCard {...item} />}
+                keyExtractor={({ item }) =>
+                  `item-${item?.id.toString()}-${Math.random()}`
+                }
                 numColumns={3}
                 columnWrapperStyle={{
                   justifyContent: "flex-start",
