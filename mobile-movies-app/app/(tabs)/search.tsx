@@ -6,6 +6,7 @@ import { fetchMovies } from "@/services/api";
 import MovieCard from "@/components/movie-card";
 import { icons } from "@/constants/icons";
 import SearchBar from "@/components/search-bar";
+import { updateSearchCount } from "@/services/appwrite";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,6 +24,7 @@ const Search = () => {
   };
 
   useEffect(() => {
+    updateSearchCount(searchQuery, movies?.[0]);
     const func = setTimeout(async () => {
       if (searchQuery.trim()) {
         await searchMovies();
@@ -105,7 +107,7 @@ const Search = () => {
         ListEmptyComponent={
           !loadingSearch && !errorSearch ? (
             <View className="mt-10 px-5">
-              <Text className="text-center text-gray-500">
+              <Text className="text-gray-500">
                 {searchQuery.trim()
                   ? "No search results found"
                   : "Search for a movie"}
